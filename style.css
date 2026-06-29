@@ -1,87 +1,161 @@
+/* ---------- General Page ---------- */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
 body{
 
-margin:0;
+    font-family:Arial, Helvetica, sans-serif;
 
-font-family:Arial,sans-serif;
+    background:linear-gradient(135deg,#4facfe,#00f2fe);
 
-background:#4facfe;
+    display:flex;
 
-display:flex;
+    justify-content:center;
 
-justify-content:center;
+    align-items:center;
 
-align-items:center;
-
-height:100vh;
+    min-height:100vh;
 
 }
+
+/* ---------- Main Container ---------- */
 
 .container{
 
-background:white;
+    width:700px;
 
-padding:30px;
+    background:white;
 
-width:400px;
+    padding:30px;
 
-border-radius:15px;
+    border-radius:20px;
 
-box-shadow:0px 0px 15px gray;
-
-text-align:center;
+    box-shadow:0 10px 30px rgba(0,0,0,.2);
 
 }
 
-input{
+/* ---------- Heading ---------- */
 
-width:90%;
+h1{
 
-padding:10px;
+    text-align:center;
 
-margin:10px 0;
+    color:#1e3c72;
 
-font-size:16px;
-
-}
-
-button{
-
-padding:10px 20px;
-
-background:#007BFF;
-
-color:white;
-
-border:none;
-
-border-radius:5px;
-
-cursor:pointer;
+    margin-bottom:10px;
 
 }
 
-button:hover{
+.subtitle{
 
-background:#0056b3;
+    text-align:center;
 
-}
+    color:gray;
 
-.weather{
-
-margin-top:20px;
-
-text-align:left;
+    margin-bottom:25px;
 
 }
 
-.suggestion{
+/* ---------- Search Area ---------- */
 
-margin-top:20px;
+.search-box{
 
-background:#eef6ff;
+    display:flex;
 
-padding:15px;
+    gap:10px;
 
-border-radius:10px;
+    margin-bottom:25px;
+
+}
+
+.search-box input{
+
+    flex:1;
+
+    padding:12px;
+
+    border:2px solid #4facfe;
+
+    border-radius:10px;
+
+    font-size:16px;
+
+}
+
+.search-box button{
+
+    padding:12px 25px;
+
+    border:none;
+
+    border-radius:10px;
+
+    background:#4facfe;
+
+    color:white;
+
+    font-size:16px;
+
+    cursor:pointer;
+
+}
+
+.search-box button:hover{
+
+    background:#0077ff;
+
+}
+
+/* ---------- Cards ---------- */
+
+.weather-card,
+.aqi-card,
+.health-card,
+.travel-card,
+.clothes-card,
+.alert-card{
+
+    background:#f7f9fc;
+
+    padding:20px;
+
+    border-radius:15px;
+
+    margin-bottom:20px;
+
+    box-shadow:0 5px 15px rgba(0,0,0,.08);
+
+}
+
+h2{
+
+    color:#0077ff;
+
+    margin-bottom:15px;
+
+}
+
+.weather-card p,
+.aqi-card p,
+.clothes-card p,
+.alert-card p{
+
+    margin-bottom:8px;
+
+}
+
+ul{
+
+    padding-left:20px;
+
+}
+
+li{
+
+    margin-bottom:8px;
 
 }
