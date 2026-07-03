@@ -74,33 +74,19 @@ h1{
 
 .search-box input{
 
-    flex:1;
+padding:15px;
 
-    padding:12px;
+border-radius:50px;
 
-    border:2px solid #4facfe;
-
-    border-radius:10px;
-
-    font-size:16px;
+font-size:18px;
 
 }
 
 .search-box button{
 
-    padding:12px 25px;
+border-radius:50px;
 
-    border:none;
-
-    border-radius:10px;
-
-    background:#4facfe;
-
-    color:white;
-
-    font-size:16px;
-
-    cursor:pointer;
+transition:.3s;
 
 }
 
@@ -109,28 +95,20 @@ h1{
     background:#0077ff;
 
 }
-
 /* ---------- Cards ---------- */
 
-.weather-card,
-.aqi-card,
-.health-card,
-.travel-card,
-.clothes-card,
-.alert-card{
+.weather-card:hover,
+.aqi-card:hover,
+.health-card:hover,
+.travel-card:hover,
+.clothes-card:hover,
+.alert-card:hover{
 
-    background:#f7f9fc;
+transform:translateY(-5px);
 
-    padding:20px;
-
-    border-radius:15px;
-
-    margin-bottom:20px;
-
-    box-shadow:0 5px 15px rgba(0,0,0,.08);
+transition:.3s;
 
 }
-
 h2{
 
     color:#0077ff;
@@ -157,5 +135,45 @@ ul{
 li{
 
     margin-bottom:8px;
+
+}
+.dashboard{
+
+display:grid;
+
+grid-template-columns:1fr 1fr;
+
+gap:20px;
+
+}
+@media(max-width:768px){
+
+.container{
+
+width:95%;
+
+}
+
+.dashboard{
+
+grid-template-columns:1fr;
+
+}
+
+.search-box{
+
+flex-direction:column;
+
+}
+}
+.loading{
+
+display:none;
+
+color:#0077ff;
+
+font-weight:bold;
+
+text-align:center;
 
 }

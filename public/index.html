@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Smart Weather Dashboard</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>🌤 Smart Weather Dashboard</h1>
+
+    <p class="subtitle">
+        Real-Time Weather & Smart Suggestions
+    </p>
+
+    <!-- Date -->
+
+    <p id="currentDate">
+        📅 Today's Date
+    </p>
+
+    <!-- Location -->
+
+    <p id="location">
+        📍 Location : --
+    </p>
+
+    <!-- Search Box -->
+
+    <div class="search-box">
+
+        <input
+        type="text"
+        id="cityInput"
+        placeholder="Enter City Name">
+
+        <button id="searchBtn">
+
+            Search
+
+        </button>
+
+    </div>
+
+    <!-- Loading -->
+
+    <p id="loading">
+
+        Searching Weather...
+
+    </p>
+
+    <!-- Current Weather -->
+
+    <div class="weather-card">
+
+        <h2>Current Weather</h2>
+
+        <div class="weather-icon">
+
+            ☀️
+
+        </div>
+
+        <h1 id="temperature">
+
+            -- °C
+
+        </h1>
+
+        <p id="condition">
+
+            Condition : --
+
+        </p>
+
+        <p id="humidity">
+
+            💧 Humidity : --
+
+        </p>
+
+        <p id="wind">
+
+            🌬 Wind Speed : --
+
+        </p>
+
+    </div>
+
+    <!-- Dashboard -->
+
+    <div class="dashboard">
+
+        <!-- AQI -->
+
+        <div class="aqi-card">
+
+            <h2>🌫 Air Quality</h2>
+
+            <p id="aqi">
+
+                AQI : --
+
+            </p>
+
+            <p id="aqiStatus">
+
+                Status : --
+
+            </p>
+
+        </div>
+
+        <!-- Health -->
+
+        <div class="health-card">
+
+            <h2>❤️ Health Tips</h2>
+
+            <ul id="healthTips">
+
+                <li>Drink enough water.</li>
+
+                <li>Wear sunscreen.</li>
+
+            </ul>
+
+        </div>
+
+        <!-- Travel -->
+
+        <div class="travel-card">
+
+            <h2>🚗 Travel Advice</h2>
+
+            <ul id="travelAdvice">
+
+                <li>Carry an umbrella if rain is expected.</li>
+
+            </ul>
+
+        </div>
+
+        <!-- Clothes -->
+
+        <div class="clothes-card">
+
+            <h2>👕 Clothing Recommendation</h2>
+
+            <p id="clothes">
+
+                T-Shirt
+
+            </p>
+
+        </div>
+
+        <!-- Alerts -->
+
+        <div class="alert-card">
+
+            <h2>🚨 Weather Alerts</h2>
+
+            <p id="alert">
+
+                No Alerts
+
+            </p>
+
+        </div>
+
+        <!-- Recent Searches -->
+
+        <div class="recent-card">
+
+            <h2>🕒 Recent Searches</h2>
+
+            <ul id="recentSearches">
+
+                <li>Chennai</li>
+
+                <li>Delhi</li>
+
+                <li>Mumbai</li>
+
+            </ul>
+
+        </div>
+
+    </div>
+
+    <footer>
+
+        <hr>
+<br>
+        <p>
+
+            Developed by Team Tech Trojans
+
+        </p>
+
+    </footer>
+
+</div>
+
+
+<!-- JavaScript -->
+
+<script src="script.js"></script>
+
+</body>
+
+</html>
