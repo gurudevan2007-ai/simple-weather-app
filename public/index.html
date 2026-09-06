@@ -82,6 +82,13 @@
         <p class="weather-note">Sunrise and sunset are shown in the city's local time.</p>
     </section>
 
+    <section class="forecast-section" aria-labelledby="forecastHeading" aria-live="polite">
+        <h2 id="forecastHeading">📅 5-Day Forecast</h2>
+        <p class="forecast-note">Upcoming days in the city's local time. Ranges cover available 3-hour forecasts; rain chance is the highest interval probability.</p>
+        <p id="forecastStatus" role="status">Search for a city to see its forecast.</p>
+        <div id="forecastCards" class="forecast-grid"></div>
+    </section>
+
     <!-- Dashboard -->
 
     <div class="dashboard">
@@ -104,6 +111,9 @@
 
             </p>
 
+            <p class="aqi-scale">OpenWeather scale: 1 Good · 2 Fair · 3 Moderate · 4 Poor · 5 Very Poor</p>
+            <p id="pm25">PM2.5 : --</p>
+            <p id="pm10">PM10 : --</p>
         </div>
 
         <!-- Health -->
@@ -154,7 +164,8 @@
 
         <div class="alert-card">
 
-            <h2>🚨 Weather Alerts</h2>
+            <h2>🚨 Weather Reminders</h2>
+            <p class="weather-note">Condition-based suggestions, not official alerts.</p>
 
             <p id="alert">
 

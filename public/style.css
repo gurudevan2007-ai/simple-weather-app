@@ -208,3 +208,20 @@ footer { margin-top: 28px; text-align: center; color: #4e6176; }
     #temperature { font-size: 42px; }
     #weatherIcon { width: 80px; height: 80px; }
 }
+
+/* Phases 8–9 */
+.forecast-section { margin-bottom: 24px; padding: 20px; border: 1px solid #dbe5ef; border-radius: 16px; }
+.forecast-note, .aqi-scale { color: #4e6176; font-size: 13px; margin-bottom: 16px; }
+.forecast-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; }
+.forecast-day { padding: 14px 10px; background: #eff7ff; border-radius: 12px; text-align: center; overflow-wrap: anywhere; }
+.forecast-day h3 { font-size: 16px; color: #1e3c72; }
+.forecast-day p { font-size: 14px; margin: 8px 0; }
+.forecast-day small { color: #4e6176; }
+#aqiStatus { display: inline-block; padding: 6px 12px; border-radius: 20px; font-weight: bold; background: #edf1f5; }
+#aqiStatus[data-level="1"] { background: #d8f2e1; color: #17582d; }
+#aqiStatus[data-level="2"] { background: #ecf4d2; color: #44591a; }
+#aqiStatus[data-level="3"] { background: #fff0bc; color: #6b4b00; }
+#aqiStatus[data-level="4"] { background: #ffe0cd; color: #8b3100; }
+#aqiStatus[data-level="5"] { background: #f7d8e5; color: #811137; }
+@media (max-width: 800px) { .forecast-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 420px) { .forecast-grid { grid-template-columns: 1fr; } }

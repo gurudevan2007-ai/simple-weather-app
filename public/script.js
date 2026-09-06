@@ -160,15 +160,16 @@ async function updateWeather(city) {
 
         wind.textContent = "🌬 Wind Speed : " + formatValue(data.wind, " m/s");
 
-        aqi.innerHTML = "AQI : " + (data.aqi ?? "--");
+        displayAirQuality(data);
+        displayForecast(data.forecast);
 
-        aqiStatus.innerHTML = "Status : " + getAqiStatus(data.aqi);
+
 
         clothes.innerHTML = getClothingSuggestion(data.temp, data.condition);
 
         alertMessage.innerHTML = getAlertMessage(data.temp, data.condition);
 
-        updateHealthTips(data.condition);
+        updateHealthTips(data.condition, data.temp, data.aqi);
 
         updateTravelAdvice(data.condition);
 
@@ -193,39 +194,25 @@ async function updateWeather(city) {
 // Health Tips
 // ==============================
 
-function updateHealthTips(condition){
-
-    if(condition.includes("Clear") || condition.includes("Sunny") || condition.includes("Hot")){
-
-        healthTips.innerHTML = `
-        <li>💧 Drink plenty of water.</li>
-        <li>🧴 Apply sunscreen.</li>
-        <li>😎 Wear sunglasses.</li>
-        `;
-
-    }
-
-    else if(condition.includes("Rain")){
-
-        healthTips.innerHTML = `
-        <li>☔ Carry an umbrella.</li>
-        <li>👟 Wear waterproof shoes.</li>
-        <li>🤧 Avoid getting soaked.</li>
-        `;
-
-    }
-
-    else{
-
-        healthTips.innerHTML = `
-        <li>😊 Weather looks pleasant.</li>
-        <li>🚶 Great day for walking.</li>
-        `;
-
-    }
-
+function getHealthTips(condition, temp, index) {
+    const airTips = {
+        1: "Air quality is good. Continue to check conditions before outdoor activity.",
+        2: "Air quality is fair. If you are sensitive to pollution, monitor local air-quality advice.",
+        3: "Air pollution is moderate. Consider shorter, less strenuous outdoor activity if sensitive to pollution.",
+        4: "Air quality is poor. Reduce prolonged or strenuous outdoor activity, especially if sensitive to pollution.",
+        5: "Air quality is very poor. Consider moving exercise indoors and reducing time in polluted outdoor air."
+    };
+    const tips = [airTips[index] || "Air-quality data is unavailable. Check local air-quality advice before outdoor activity."];
+    if (temp >= 35) tips.push("Take breaks in a cool place and drink water during hot weather.");
+    if (/rain|drizzle|thunderstorm/i.test(condition)) tips.push("Carry an umbrella and wear waterproof shoes; seek shelter during thunderstorms.");
+    else if (/clear|sunny/i.test(condition)) tips.push("Use sunscreen and sunglasses when outdoors in daylight.");
+    else tips.push("Check local weather updates before making outdoor plans.");
+    return tips;
 }
-
+function updateHealthTips(condition, temp, index) {
+    // These strings are fixed application copy, never upstream HTML.
+    healthTips.innerHTML = getHealthTips(condition, temp, index).map(tip => `<li>${tip}</li>`).join("");
+}
 
 // ==============================
 // Travel Advice
@@ -254,7 +241,7 @@ function updateTravelAdvice(condition){
     else{
 
         travelAdvice.innerHTML = `
-        <li>🚶 Safe for travelling.</li>
+        <li>Check local road and weather conditions before travelling.</li>
         <li>😊 Enjoy your journey.</li>
         `;
 
@@ -320,4 +307,50 @@ function displayWeatherDetails(data) {
         icon.alt = data.description || "Current weather";
     } else icon.removeAttribute("src");
     icon.onerror = () => { icon.hidden = true; };
+}
+
+// OpenWeather uses its own 1–5 scale, not the US or Indian numeric AQI.
+function displayAirQuality(data) {
+    const valid = Number.isInteger(data.aqi) && data.aqi >= 1 && data.aqi <= 5;
+    aqi.textContent = valid ? `AQI : ${data.aqi} / 5` : "AQI : --";
+    aqiStatus.textContent = valid ? "Status : " + getAqiStatus(data.aqi) : "Status : Unavailable";
+    aqiStatus.dataset.level = valid ? String(data.aqi) : "unknown";
+    document.getElementById("pm25").textContent = "PM2.5 : " + formatValue(data.aqiComponents?.pm2_5, " µg/m³");
+    document.getElementById("pm10").textContent = "PM10 : " + formatValue(data.aqiComponents?.pm10, " µg/m³");
+}
+
+function displayForecast(days) {
+    const container = document.getElementById("forecastCards");
+    const status = document.getElementById("forecastStatus");
+    container.replaceChildren();
+    if (!Array.isArray(days) || !days.length) {
+        status.textContent = "Forecast temporarily unavailable for this city. Try searching again.";
+        return;
+    }
+    status.textContent = "";
+    for (const day of days) {
+        const card = document.createElement("article");
+        card.className = "forecast-day";
+        const add = (tag, text) => {
+            const element = document.createElement(tag);
+            element.textContent = text;
+            card.append(element);
+        };
+        add("h3", new Date(day.date + "T12:00:00Z").toLocaleDateString("en-US", {
+            timeZone: "UTC", weekday: "short", month: "short", day: "numeric"
+        }));
+        if (/^(01|02|03|04|09|10|11|13|50)[dn]$/.test(day.icon)) {
+            const icon = document.createElement("img");
+            icon.src = `https://openweathermap.org/img/wn/${day.icon}@2x.png`;
+            icon.alt = day.description;
+            icon.width = 64; icon.height = 64;
+            icon.onerror = () => { icon.hidden = true; };
+            card.append(icon);
+        }
+        add("p", day.description);
+        add("p", "High " + formatValue(day.high, "°C", true) + " · Low " + formatValue(day.low, "°C", true));
+        add("p", "Peak rain chance: " + formatValue(day.rainChance, "%"));
+        if (day.partial) add("small", "Partial-day coverage");
+        container.append(card);
+    }
 }

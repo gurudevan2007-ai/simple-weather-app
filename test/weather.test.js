@@ -16,11 +16,15 @@ test('HTTP route returns Phase 7 fields and AQI; static files exclude secrets', 
   const app = express();
   app.listen = () => {}; // The harness owns the test server's lifetime.
   const bindings = {
-    require: name => name === 'express' ? Object.assign(() => app, express) : name === 'dotenv' ? { config() {} } : require(name),
+    require: name => name === 'express' ? Object.assign(() => app, express) : name === 'dotenv' ? { config() {} } : name.startsWith('.') ? require(path.resolve(root, name)) : require(name),
     __dirname: root, module: { exports: {} }, process: { env: { OPENWEATHER_API_KEY: 'test-secret' } },
     console, URL, URLSearchParams, AbortSignal,
     fetch: async url => ({ ok: true, status: 200, json: async () => String(url).includes('air_pollution')
-      ? { list: [{ main: { aqi: 2 }, components: { pm2_5: 8 } }] } : weather })
+      ? { list: [{ main: { aqi: 2 }, components: { pm2_5: 8 } }] }
+      : String(url).includes('/forecast?') ? { list: Array.from({ length: 40 }, (_, i) => ({
+          dt: Math.floor(Date.now() / 1000) + (i + 1) * 10800,
+          main: { temp: 22 }, weather: [{ description: 'cloudy', icon: '04d' }], pop: 0.4
+        })) } : weather })
   };
   // Run in this realm so Express receives native promises, while replacing only upstream I/O.
   new Function(...Object.keys(bindings), fs.readFileSync(path.join(root, 'server.js'), 'utf8'))(...Object.values(bindings));
@@ -36,6 +40,9 @@ test('HTTP route returns Phase 7 fields and AQI; static files exclude secrets', 
       assert.equal(data[key], value, key);
     }
     assert.equal(JSON.stringify(data).includes('test-secret'), false);
+    assert.equal(data.forecast.length, 5);
+    assert.equal(data.forecast[0].rainChance, 40);
+    assert.equal(data.forecast[0].low, 22);
     assert.equal((await fetch(base + '/api/weather?city=%20')).status, 400);
     assert.equal((await fetch(base + '/.env')).status, 404);
     assert.equal((await fetch(base + '/')).status, 200);
@@ -44,8 +51,8 @@ test('HTTP route returns Phase 7 fields and AQI; static files exclude secrets', 
 
 test('frontend renders weather, city time, icon and preserves suggestions and searches', async () => {
   const elements = new Map();
-  const element = () => ({ textContent: '', innerHTML: '', style: {}, hidden: true, children: [],
-    addEventListener() {}, removeAttribute(key) { delete this[key]; }, prepend(item) { this.children.unshift(item); } });
+  const element = () => ({ textContent: '', innerHTML: '', style: {}, dataset: {}, hidden: true, children: [],
+    append(...items) { this.children.push(...items); }, replaceChildren(...items) { this.children = items; }, addEventListener() {}, removeAttribute(key) { delete this[key]; }, prepend(item) { this.children.unshift(item); } });
   const context = { document: { getElementById(id) { if (!elements.has(id)) elements.set(id, element()); return elements.get(id); },
     createElement: element }, console, Date, alert: message => { throw Error(message); },
     fetch: async () => ({ ok: true, json: async () => ({ city: 'Chennai', country: 'IN', temp: 31,
@@ -90,7 +97,7 @@ test('upstream errors are safe and AQI outages preserve weather', async () => {
       assert.equal((await res.text()).includes('test-secret'), false);
     }
     global.fetch = async url => {
-      if (String(url).includes('air_pollution')) throw Error('offline');
+      if (String(url).includes('air_pollution') || String(url).includes('/forecast?')) throw Error('offline');
       return { ok: true, json: async () => weather };
     };
     const res = await originalFetch(url);
@@ -98,6 +105,7 @@ test('upstream errors are safe and AQI outages preserve weather', async () => {
     assert.equal(res.status, 200);
     assert.equal(data.country, 'IN');
     assert.equal(data.aqi, null);
+    assert.deepEqual(data.forecast, []);
   } finally {
     global.fetch = originalFetch;
     if (originalKey === undefined) delete process.env.OPENWEATHER_API_KEY;
