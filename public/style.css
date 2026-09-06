@@ -177,3 +177,34 @@ font-weight:bold;
 text-align:center;
 
 }
+/* Phase 7: responsive weather and dashboard cards. */
+body { padding: 24px 12px; color: #24364b; line-height: 1.5; }
+.container { width: min(900px, 100%); }
+#currentDate, #location { text-align: center; margin-bottom: 12px; overflow-wrap: anywhere; }
+.search-box { margin-top: 20px; }
+.search-box input { flex: 1; min-width: 0; width: 100%; border: 1px solid #a7bacd; }
+.search-box button { padding: 12px 28px; border: 0; background: #1759a7; color: white; font-size: 16px; cursor: pointer; }
+.search-box button:disabled { opacity: .6; cursor: wait; }
+:focus-visible { outline: 3px solid #d48300; outline-offset: 3px; }
+#loading { display: none; text-align: center; color: #1759a7; margin-bottom: 16px; }
+.weather-card { padding: 24px; margin-bottom: 24px; border-radius: 18px; background: #eff7ff; border: 1px solid #d5e6f5; }
+.weather-card:hover { transform: none; }
+.weather-main { display: flex; justify-content: center; align-items: center; gap: 16px; }
+#weatherIcon { object-fit: contain; }
+#temperature { font-size: 52px; font-weight: 700; color: #1e3c72; margin: 0; }
+#condition { text-align: center; text-transform: capitalize; margin-bottom: 20px; }
+.weather-info { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.weather-info p { background: white; padding: 12px; border-radius: 10px; margin: 0; overflow-wrap: anywhere; }
+.weather-note { font-size: 13px; color: #4e6176; text-align: center; margin-top: 16px; }
+.dashboard > div { min-width: 0; padding: 20px; border: 1px solid #dbe5ef; border-radius: 14px; }
+h2 { color: #1759a7; font-size: 20px; }
+footer { margin-top: 28px; text-align: center; color: #4e6176; }
+@media (max-width: 540px) {
+    body { padding: 12px 8px; }
+    .container { padding: 18px; }
+    .container > h1 { font-size: 25px; }
+    .weather-card { padding: 16px; }
+    .weather-info, .dashboard { grid-template-columns: 1fr; }
+    #temperature { font-size: 42px; }
+    #weatherIcon { width: 80px; height: 80px; }
+}

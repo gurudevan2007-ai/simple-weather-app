@@ -1,10 +1,11 @@
 {
   "name": "simple-weather-app",
   "version": "1.0.0",
-  "description": "",
-  "main": "script.js",
+  "description": "Smart weather dashboard with live weather, air quality and suggestions.",
+  "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node server.js",
+    "test": "node --test"
   },
   "repository": {
     "type": "git",
@@ -19,7 +20,11 @@
   },
   "homepage": "https://github.com/gurudevan2007-ai/-simple-weather-app#readme",
   "dependencies": {
+    "axios": "^1.18.1",
     "dotenv": "^17.4.2",
     "express": "^5.2.1"
+  },
+  "engines": {
+    "node": ">=22"
   }
 }
